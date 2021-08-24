@@ -1,0 +1,42 @@
+#landing-title{
+	font-family: Courier New;
+	font-size: 8em;
+	color: #000;
+	
+
+	text-align: center;
+	position: fixed;
+	top: 23%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#gradient{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#mask{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+img{
+	width: 40px;
+	position: fixed;
+	top: 85vh;
+	left: 50vw;
+	transform: translateX(-50%);
+	animation: fadeIn 5s linear 15s 1 normal both;
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+body{
+	overflow: hidden;
+}
