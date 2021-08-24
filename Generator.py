@@ -41,7 +41,5 @@ source = tkinter.filedialog.askdirectory(title="Choose source folder")
 target = tkinter.filedialog.askdirectory(title="Choose target folder")
 target = os.path.join(target, os.path.basename(source))
 
-print(source)
-print(target)
 
 walk(source, target)
