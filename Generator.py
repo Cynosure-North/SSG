@@ -1,5 +1,5 @@
 import os
-import tkinter.filedialog
+import click
 import shutil
 import markdown2
 
@@ -9,9 +9,10 @@ dither_png = True
 
 def walk(source_dir, target_dir):
     if os.path.exists(target_dir):
-        if input(target_dir + " already exists, do you wish to continue. (y/n").lower() == 'n':
+        if input(target_dir + " already exists, do you wish to continue. (y/n)").lower() == 'n':
             exit()
-    os.mkdir(target_dir)
+    else:
+        os.mkdir(target_dir)
 
     with open("template.html", "r") as template:
         for (root, dirs, files) in os.walk(source_dir):
@@ -23,7 +24,7 @@ def walk(source_dir, target_dir):
             current_folder = os.path.relpath(root, source_dir)
             if root != source_dir:
                 os.mkdir(os.path.join(target_dir, current_folder))
-            # Copy the files
+
             for file in files:
                 # If they're markdown convert it
                 if file.endswith(".md"):
@@ -31,15 +32,20 @@ def walk(source_dir, target_dir):
                     with open(os.path.join(target_dir, root, os.path.splitext(file)[0] + ".html"), "w") as output:
                         for line in template:
                             output.write(line.replace("[Content]", content))
-
+                # Copy the files
                 else:
                     shutil.copyfile(os.path.join(source_dir, current_folder, file),
                                     os.path.join(target_dir, current_folder, file))
 
 
-source = tkinter.filedialog.askdirectory(title="Choose source folder")
-target = tkinter.filedialog.askdirectory(title="Choose target folder")
-target = os.path.join(target, os.path.basename(source))
+@click.command()
+@click.option("-s", "--source", type=str, default=os.getcwd(), show_default=True)
+@click.option("-t", "--target", type=str, default=os.getcwd(), show_default=True)
+@click.option("-d/-D", "--dither/--no-Dither", default=True, show_default=True)
+def main(source, target, dither):
+    dither_png = dither
+    walk(source, target)
 
 
-walk(source, target)
+if __name__ == "__main__":
+    main()
