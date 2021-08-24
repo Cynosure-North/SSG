@@ -1,7 +1,8 @@
 # Vedette
-This is a *very* simple Static site generator.
+This is a *very* simple static site generator.
 
-It takes a file structure, and copies it. If any of the file are .md convert them to .html files. uses jinja2 templates
+It takes a file structure, and copies it. If any of the file are .md it converts them to .html files.
+The templates are made in jinja2.
 
 ## To use
 1. Make sure dependancies are installed
