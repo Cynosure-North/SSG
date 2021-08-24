@@ -1,5 +1,12 @@
 # Vedette
-This is a *very* simple Static site generator
+This is a *very* simple Static site generator.
+
+It takes a file structure, and copies it. If any of the file are .md convert them to .html files. uses jinja2 templates
+
+## To use
+1. Write content and place it in the correct file structure
+2. Make sure to place correctly named templates in \_\_templates\_\_
+3. Run Generator.py
 
 ## Options
 - -s or --source: The root directory containing all resources (default is current directory)
