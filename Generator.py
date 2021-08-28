@@ -123,8 +123,8 @@ def MD_to_HTML(file):
 
 
 @click.command()
-@click.option("-s", "--source", type=click.Path(exists=True), prompt=True, show_default=True, help="Where to get the files")
-@click.option("-t", "--target", type=click.Path(exists=True, writable=True), prompt=True, show_default=True,
+@click.option("-s", "--source", type=click.Path(exists=True), prompt=True, help="Where to get the files")
+@click.option("-t", "--target", type=click.Path(exists=True, writable=True), prompt=True,
               help="Where to put the output (doesn't make a folder)")
 @click.option("-d/-D", "--dither/--no-Dither", default=True, show_default=True, help="Dither PNGs?")
 @click.option("-m/-M", "--markdown/--no-Markdown", default=False, show_default=True,
