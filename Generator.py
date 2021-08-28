@@ -123,13 +123,12 @@ def MD_to_HTML(file):
 
 
 @click.command()
-@click.option("-s", "--source", type=click.Path(exists=True), prompt=True, show_default=True, help="Where to get the files")
-@click.option("-t", "--target", type=click.Path(exists=True, writable=True), prompt=True, show_default=True,
-              help="Where to put the output (doesn't make a folder)")
-@click.option("-d/-D", "--dither/--no-Dither", default=True, show_default=True, help="Dither PNGs?")
-@click.option("-m/-M", "--markdown/--no-Markdown", default=False, show_default=True,
-              help="Copy markdown files into output?")
-@click.option("-j/-J", "--junction/--no-junction", default=True, show_default=True,
+@click.option("-s", "--source", type=click.Path(exists=True), prompt=True, help="Where to get the files")
+@click.option("-t", "--target", type=click.Path(exists=True, writable=True), prompt=True,
+              help="Where to put the output (this doesn't make a folder)")
+@click.option("-d/-D", "--dither/--no-Dither", default=True, help="Dither PNGs? (TODO)")
+@click.option("-m/-M", "--markdown/--no-Markdown", default=False, help="Copy markdown files into output?")
+@click.option("-j/-J", "--junction/--no-junction", default=True,
               help="Generate __junction__files linking to contents of each folder?")
 def main(source, target, dither, markdown, junction):
     source = os.path.normpath(source)
