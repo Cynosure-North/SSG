@@ -106,7 +106,7 @@ def load_key_details(source_dir, root, file):
                 "address": os.path.join(root, os.path.splitext(file)[0] + ".html")}
     else:   # HTML file
         return {"title": os.path.splitext(file)[0],
-                "description": "This page was custom made, so it's something special",
+                "description": "",
                 "address": os.path.join(root, file)}
 
 
