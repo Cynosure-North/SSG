@@ -6,7 +6,7 @@ from jinja2 import Environment, FileSystemLoader
 import frontmatter
 
 
-def walk(source_dir, target_dir, dither_png, copy_markdown, use_junctions, basename):
+def walk(source_dir, target_dir, dither_png, copy_markdown, use_junctions):
     """
         Walk through every element in a source_dir and copy it to target_dir
         If it's a .md markdown file convert it to HTML
@@ -36,7 +36,7 @@ def walk(source_dir, target_dir, dither_png, copy_markdown, use_junctions, basen
         if use_junctions and not root == source_dir \
                 and not os.path.basename(root).startswith("-") and not os.path.basename(root).startswith("__"):
 
-            out_file = make_junctions(source_dir, current_folder, dirs, files, basename)
+            out_file = make_junctions(source_dir, current_folder, dirs, files)
             with open(os.path.join(target_dir, current_folder, "__junction__.html"), "w") as output:
                 output.write(out_file)
 
@@ -49,7 +49,7 @@ def walk(source_dir, target_dir, dither_png, copy_markdown, use_junctions, basen
                 if copy_markdown and not source_file == target_file:
                     shutil.copyfile(source_file, target_file)
 
-                out_file = MD_to_HTML(source_file, basename)
+                out_file = MD_to_HTML(source_file)
                 with open(os.path.splitext(target_file)[0] + ".html", "w") as output:
                     output.write(out_file)
             # Dither
@@ -60,7 +60,7 @@ def walk(source_dir, target_dir, dither_png, copy_markdown, use_junctions, basen
                 shutil.copyfile(source_file, target_file)
 
 
-def make_junctions(source_dir, root, dirs, files, basename):  # TODO: Not working
+def make_junctions(source_dir, root, dirs, files):  # TODO: Not working
     """
         Takes a folder, and all contents and returns the code for a __junction__ page
         This has links to all subfolders' __junction__ pages and all content in the folder
@@ -73,7 +73,7 @@ def make_junctions(source_dir, root, dirs, files, basename):  # TODO: Not workin
     pages += [{"title": z, "description": "", "address": os.path.join(root, z, "__junction__.html")}
                           for z in dirs if not z.startswith("-")]       # TODO: It would be nice to prevent subfolders too
     template = env.get_template("junction.html")
-    return template.render(hierarchy=hierarchy, pages=pages, title=os.path.basename(root), basename=basename)        # TODO: What
+    return template.render(hierarchy=hierarchy, pages=pages, title=os.path.basename(root))        # TODO: What
 
 
 def get_hierarchy(root):        # TODO: it probably doesn't have a slash at the start which I need
@@ -83,7 +83,7 @@ def get_hierarchy(root):        # TODO: it probably doesn't have a slash at the 
 
     hierarchy = []
     while root != os.path.split(root)[0]:
-        # I'm not sure why, but this has to be append, rather than += or [len(hierarchy):]. Odd...
+        # I'm not sure why, but this has to be append, rather than += or [len(hierarchy):]. Odd
         hierarchy.append({"title": os.path.split(root)[1], "address": os.path.join(root, "__junction__.html")})
         root = os.path.split(root)[0]
     return hierarchy
@@ -110,7 +110,7 @@ def load_key_details(source_dir, root, file):
                 "address": os.path.join(root, file)}
 
 
-def MD_to_HTML(file, basename):
+def MD_to_HTML(file):
     """
         Converts a filepath to a valid markdown file into HTML
         Make sure it's valid, and the template is in /__templates__
@@ -119,7 +119,7 @@ def MD_to_HTML(file, basename):
     post = frontmatter.load(file)
     template = env.get_template(post['template'] + ".html")
     return template.render(content=markdown2.markdown(post.content), title=post['title'],
-                           description=post['description'], time=post['time'], basename=basename)
+                           description=post['description'], time=post['time'])
 
 
 @click.command()
@@ -130,8 +130,7 @@ def MD_to_HTML(file, basename):
 @click.option("-m/-M", "--markdown/--no-Markdown", default=False, help="Copy markdown files into output?")
 @click.option("-j/-J", "--junction/--no-junction", default=True,
               help="Generate __junction__files linking to contents of each folder?")
-@click.option("-b", "--basename", help="The basename for all links")
-def main(source, target, dither, markdown, junction, basename):
+def main(source, target, dither, markdown, junction):
     source = os.path.normpath(source)
     target = os.path.normpath(target)
 
@@ -142,10 +141,10 @@ def main(source, target, dither, markdown, junction, basename):
         global env
         env = Environment(loader=FileSystemLoader(os.path.join(source, "__templates__")))
 
-        walk(source, target, dither, markdown, junction, basename)
+        walk(source, target, dither, markdown, junction)
 
     else:       # Pointed to a file
-        out_file = MD_to_HTML(source, basename)
+        out_file = MD_to_HTML(source)
         with open(target, "w") as output:
             output.write(out_file)
 
