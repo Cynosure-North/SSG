@@ -96,7 +96,10 @@ def load_key_details(source_dir, root, file):
         The description
         The address
 
-        Or takes a
+        Or takes a filepath to a file and returns
+        The title - The filename without the extension
+        The description - [blank]
+        The address
 
         Not especially necessary, but it saves an extra call to frontmatter.load
     """
