@@ -86,7 +86,7 @@ def get_hierarchy(root):        # TODO: it probably doesn't have a slash at the 
         # I'm not sure why, but this has to be append, rather than += or [len(hierarchy):]. Odd
         hierarchy.append({"title": os.path.split(root)[1], "address": os.path.join(root, "__junction__.html")})
         root = os.path.split(root)[0]
-    return hierarchy
+    return hierarchy[1:]
 
 
 def load_key_details(source_dir, root, file):
