@@ -1,6 +1,6 @@
 # Vedette
 This is a *very* simple static site generator.
-I change my mind, and now I'm using Jekyll (for now)
+I changed my mind, and I'm using Jekyll (for now)
 
 It takes a file structure, and copies it. If any of the file are .md it converts them to .html files.
 The templates are made in jinja2.
